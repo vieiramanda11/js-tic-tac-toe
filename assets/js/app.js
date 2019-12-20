@@ -33,7 +33,7 @@ const gameBoard = (() => {
         board[6] === board[7] && board[6] === board[8]) {
           return true;
         }
-  };
+  }
 
   const winVerticalCondition = () => {
     if (board[0] == board[3] && board[0] == board[6] ||
@@ -41,14 +41,14 @@ const gameBoard = (() => {
         board[2] == board[5] && board[2] == board[8]) {
           return true;
        }
-  };
+  }
 
   const winDiagonalCondition = () => {
     if (board[0] == board[4] && board[0] == board[8] ||
         board[2] == board[4] && board[2] == board[6]) {
           return true;
         }
-  };
+  }
 
   const players = (first, second) => {
     firstPlayer = Player(first, turnX);
@@ -62,9 +62,11 @@ const gameBoard = (() => {
   }
 
   const playerMove = (position) => {
+    console.log('before', currentPlayer.getPlayerName(), firstPlayer.getPlayerName(), secondPlayer.getPlayerName());
     if(endRound ===false){
       if (currentPlayer === firstPlayer) {
         board[position] = firstPlayer.getPlayerToken();
+        console.log('after', board);
         endRound = true;
 
       }else{
@@ -77,11 +79,9 @@ const gameBoard = (() => {
   }
 
   const draw = () => {
-    let filter = board.filter((position) => {
-      Number.isInteger(position);
-    });
+    let filter = board.filter((position) => !Number.isInteger(position));
 
-    if (filter.length === 0) {
+    if (filter.length === 9) {
       return true;
     } else {
       return false;
@@ -89,20 +89,30 @@ const gameBoard = (() => {
   }
 
   const win = () => {
-    if(board.winDiagonalCondition() || board.winHorizontalCondition() || board.winVerticalCondition()) {
+    if(winDiagonalCondition() || winHorizontalCondition() || winVerticalCondition()) {
       return true;
     } else {
       return false;
     }
-  };
+  }
 
   const winner = () => {
-    currentPlayer === firstPlayer ? secondPlayer.getPlayerName() : firstPlayer.getPlayerName();
-  };
+    return currentPlayer === firstPlayer ? secondPlayer.getPlayerName() : firstPlayer.getPlayerName();
+  }
+
+  const boardEmpty = () => {
+    let filter = board.filter((position) => Number.isInteger(position));
+    if (filter.length === board.length) {
+      return true;
+    } else {
+      return false;
+    }
+
+  }
 
   return {
-    setGame, getCurrentPlayer, players
-  }
+    setGame, getCurrentPlayer, players, win, draw, playerMove, winner, boardEmpty
+  };
 
 })();
 
@@ -132,8 +142,34 @@ const displayController = ( () => {
 
   }
 
+  const renderMoves = (e) =>{
+
+
+    if (gameBoard.boardEmpty()){
+      e.target.innerHTML = gameBoard.getCurrentPlayer().getPlayerToken() === 'X' ? 'O':'X';
+      gameBoard.playerMove(e.target.dataset.position-1);
+    }
+
+    if (!gameBoard.win() && !gameBoard.draw() ) {
+      e.target.innerHTML = gameBoard.getCurrentPlayer().getPlayerToken() === 'X' ? 'O':'X';
+      gameBoard.playerMove(e.target.dataset.position-1);
+    }
+
+    if (gameBoard.win()){
+      renderMessages(`${gameBoard.winner()} congratulations, you won the game!`);
+    }else if(gameBoard.draw()) {
+      renderMessages("Too bad. It's a draw.");
+    }
+
+  }
+
+  const renderMessages = (messageString) => {
+    const spanMessage = document.querySelector('.span-message');
+    spanMessage.innerHTML = messageString;
+  }
+
   return {
-    renderStartGame
+    renderStartGame, renderMoves
   }
 
 }
@@ -141,4 +177,6 @@ const displayController = ( () => {
 )();
 
 const buttonStartGame = document.querySelector('#start-game');
+const buttonsMove = document.querySelectorAll('.btn-move');
 buttonStartGame.addEventListener('click',displayController.renderStartGame);
+buttonsMove.forEach((button) => button.addEventListener('click', displayController.renderMoves));
