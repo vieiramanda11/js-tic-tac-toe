@@ -31,9 +31,8 @@ const gameBoard = (() => {
       || (board[6] === board[7] && board[6] === board[8])
     ) {
       return true;
-    } else {
-      return false;
     }
+    return false;
   };
 
   const winVerticalCondition = () => {
@@ -43,9 +42,8 @@ const gameBoard = (() => {
       || (board[2] === board[5] && board[2] === board[8])
     ) {
       return true;
-    } else {
-      return false;
     }
+    return false;
   };
 
   const winDiagonalCondition = () => {
@@ -54,9 +52,8 @@ const gameBoard = (() => {
       || (board[2] === board[4] && board[2] === board[6])
     ) {
       return true;
-    } else {
-      return false;
     }
+    return false;
   };
 
   const players = (first, second) => {
@@ -85,11 +82,11 @@ const gameBoard = (() => {
   };
 
   const draw = () => {
-    const filter = board.filter(position => !Number.isInteger(position));
-
+    const filter = board.filter((position) => !Number.isInteger(position));
     if (filter.length === 9) {
       return true;
     }
+    return false;
   };
 
   const win = () => {
@@ -99,7 +96,8 @@ const gameBoard = (() => {
       || winVerticalCondition()
     ) {
       return true;
-    }
+    } 
+    return false;
   };
 
   const winner = () => {
@@ -109,12 +107,11 @@ const gameBoard = (() => {
   };
 
   const boardEmpty = () => {
-    const filter = board.filter((position) => Number.isInteger(position));
+    const filter = board.filter(position => Number.isInteger(position));
     if (filter.length === board.length) {
       return true;
-    } else {
-      return false;
     }
+    return false;
   };
 
   return {
@@ -129,10 +126,21 @@ const gameBoard = (() => {
   };
 })();
 
-//Module displayController
+//  Module displayController
 const displayController = (() => {
   let nameX;
   let nameO;
+
+  const renderBoard = () => {
+    const form = document.querySelector('.form');
+    const boardGame = document.querySelector('#board-game');
+    boardGame.classList.remove('board-hidden');
+    boardGame.classList.add('board-active');
+    form.classList.toggle('form-hidden');
+    gameBoard.setGame();
+    gameBoard.players(nameX, nameO);
+  };
+
   const renderStartGame = () => {
     const playerXInput = document.querySelector('#name-player-x');
     const playerOInput = document.querySelector('#name-player-o');
@@ -146,14 +154,9 @@ const displayController = (() => {
     }
   };
 
-  const renderBoard = () => {
-    const form = document.querySelector('.form');
-    const boardGame = document.querySelector('#board-game');
-    boardGame.classList.remove('board-hidden');
-    boardGame.classList.add('board-active');
-    form.classList.toggle('form-hidden');
-    gameBoard.setGame();
-    gameBoard.players(nameX, nameO);
+  const renderMessages = messageString => {
+    const spanMessage = document.querySelector('.span-message');
+    spanMessage.innerHTML = messageString;
   };
 
   const renderMoves = e => {
@@ -180,11 +183,6 @@ const displayController = (() => {
     }
   };
 
-  const renderMessages = messageString => {
-    const spanMessage = document.querySelector('.span-message');
-    spanMessage.innerHTML = messageString;
-  };
-
   const restart = () => {
     gameBoard.setGame();
     gameBoard.players(nameX, nameO);
@@ -204,7 +202,5 @@ const buttonStartGame = document.querySelector('#start-game');
 const buttonsMove = document.querySelectorAll('.btn-move');
 const restartButton = document.getElementById('button-reset');
 buttonStartGame.addEventListener('click', displayController.renderStartGame);
-buttonsMove.forEach(button =>
-  button.addEventListener('click', displayController.renderMoves)
-);
+buttonsMove.forEach(button => button.addEventListener('click', displayController.renderMoves));
 restartButton.addEventListener('click', displayController.restart);
