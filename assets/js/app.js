@@ -184,9 +184,9 @@ const displayController = (() => {
     gameBoard.setGame();
     gameBoard.players(nameX, nameO);
     const buttons = document.querySelectorAll('.btn-move');
-    buttons.forEach(button => {
+    buttons.forEach((button) => {
       const auxButton = button;
-      auxButton.innerHTML = ''
+      auxButton.innerHTML = '';
     });
     renderMessages("Let's Begin. First Turn X");
   };
