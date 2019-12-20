@@ -13,6 +13,7 @@ const gameBoard = (() => {
   let turnX;
   let turnO;
   let endRound;
+  const firstPlayer, secondPlayer;
 
   const setGame = (player) => {
     turnX = 'X';
@@ -48,6 +49,11 @@ const gameBoard = (() => {
           return true;
         }
   };
+
+  const players = (first, second) => {
+    firstPlayer = Player(first, turnX);
+    secondPlayer = Player(second, turnO);
+  }
 
   return {
     setGame, getCurrentPlayer
