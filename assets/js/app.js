@@ -119,7 +119,6 @@ const gameBoard = (() => {
 //Module displayController
 const displayController = ( () => {
   const renderStartGame = () => {
-    console.log('Hey',this);
     const playerXInput = document.querySelector('#name-player-x');
     const playerOInput = document.querySelector('#name-player-o');
     const alert = document.querySelector('#names-players');
@@ -150,7 +149,7 @@ const displayController = ( () => {
       gameBoard.playerMove(e.target.dataset.position-1);
     }
 
-    if (!gameBoard.win() && !gameBoard.draw() ) {
+    if (!gameBoard.win() && !gameBoard.draw() && e.target.innerHTML === '' ) {
       e.target.innerHTML = gameBoard.getCurrentPlayer().getPlayerToken() === 'X' ? 'O':'X';
       gameBoard.playerMove(e.target.dataset.position-1);
     }
