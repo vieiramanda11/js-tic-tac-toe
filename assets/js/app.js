@@ -118,6 +118,8 @@ const gameBoard = (() => {
 
 //Module displayController
 const displayController = ( () => {
+  let nameX;
+  let nameO;
   const renderStartGame = () => {
     const playerXInput = document.querySelector('#name-player-x');
     const playerOInput = document.querySelector('#name-player-o');
@@ -125,12 +127,14 @@ const displayController = ( () => {
     alert.classList.remove('d-none');
     if (playerXInput.value !== '' && playerOInput.value !== '') {
       alert.classList.add('d-none');
-      renderBoard(playerXInput.value, playerOInput.value)
+      nameX = playerXInput.value;
+      nameO = playerOInput.value;
+      renderBoard();
     }
 
   }
 
-  const renderBoard = (nameX, nameO) => {
+  const renderBoard = () => {
     const form = document.querySelector('.form');
     const boardGame = document.querySelector('#board-game');
     boardGame.classList.remove('board-hidden');
@@ -143,14 +147,14 @@ const displayController = ( () => {
 
   const renderMoves = (e) =>{
 
-
+    console.log(gameBoard.getCurrentPlayer().getPlayerToken());
     if (gameBoard.boardEmpty()){
-      e.target.innerHTML = gameBoard.getCurrentPlayer().getPlayerToken() === 'X' ? 'O':'X';
+      e.target.innerHTML = gameBoard.getCurrentPlayer().getPlayerToken();
       gameBoard.playerMove(e.target.dataset.position-1);
     }
 
     if (!gameBoard.win() && !gameBoard.draw() && e.target.innerHTML === '' ) {
-      e.target.innerHTML = gameBoard.getCurrentPlayer().getPlayerToken() === 'X' ? 'O':'X';
+      e.target.innerHTML = gameBoard.getCurrentPlayer().getPlayerToken();
       gameBoard.playerMove(e.target.dataset.position-1);
     }
 
@@ -158,6 +162,8 @@ const displayController = ( () => {
       renderMessages(`${gameBoard.winner()} congratulations, you won the game!`);
     }else if(gameBoard.draw()) {
       renderMessages("Too bad. It's a draw.");
+    }else {
+      renderMessages('Next Turn '+gameBoard.getCurrentPlayer().getPlayerToken());
     }
 
   }
@@ -169,8 +175,10 @@ const displayController = ( () => {
 
   const restart = () => {
     gameBoard.setGame();
+    gameBoard.players(nameX, nameO);
     const buttons = document.querySelectorAll('.btn-move');
     buttons.forEach((button) => button.innerHTML = '');
+    renderMessages("Let's Begin. First Turn X");
   }
 
   return {
