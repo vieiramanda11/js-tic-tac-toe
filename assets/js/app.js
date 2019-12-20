@@ -168,8 +168,14 @@ const displayController = ( () => {
     spanMessage.innerHTML = messageString;
   }
 
+  const restart = () => {
+    gameBoard.setGame();
+    const buttons = document.querySelectorAll('.btn-move');
+    buttons.forEach((button) => button.innerHTML = '');
+  }
+
   return {
-    renderStartGame, renderMoves
+    renderStartGame, renderMoves, restart
   }
 
 }
@@ -180,3 +186,4 @@ const buttonStartGame = document.querySelector('#start-game');
 const buttonsMove = document.querySelectorAll('.btn-move');
 buttonStartGame.addEventListener('click',displayController.renderStartGame);
 buttonsMove.forEach((button) => button.addEventListener('click', displayController.renderMoves));
+const restartButton = document.getElementById('button-reset').addEventListener('click', displayController.restart);
