@@ -1,0 +1,28 @@
+body {
+    overflow: hidden;
+}
+.btn-group-vertical {
+    height: 500px;
+    font-size: 50px;
+}
+.btn-move {
+    height: 150px;
+    width: 150px;
+    font-size: 40px!important;
+}
+
+.form-hidden {
+    transform: translateY(-500%);
+}
+
+.form-active {
+    transform: translateY(0%);
+}
+
+.board-hidden {
+    transform: translateY(500%);
+}
+
+.board-active {
+    transform: translateY(-35%);
+}
