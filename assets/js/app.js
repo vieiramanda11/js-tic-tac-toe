@@ -13,13 +13,13 @@ const gameBoard = (() => {
   let turnX;
   let turnO;
   let endRound;
-  const firstPlayer, secondPlayer;
+  let firstPlayer;
+  let secondPlayer;
 
-  const setGame = (player) => {
+  const setGame = () => {
     turnX = 'X';
     turnO = 'O';
     endRound = false;
-    currentPlayer = player;
     board = [1, 2, 3, 4, 5, 6, 7, 8, 9];
   }
 
@@ -53,6 +53,7 @@ const gameBoard = (() => {
   const players = (first, second) => {
     firstPlayer = Player(first, turnX);
     secondPlayer = Player(second, turnO);
+    currentPlayer = firstPlayer;
   }
 
   const changePlayer = () => {
@@ -100,11 +101,44 @@ const gameBoard = (() => {
   };
 
   return {
-    setGame, getCurrentPlayer
+    setGame, getCurrentPlayer, players
   }
 
 })();
 
-playerX = Player('amanda', 'X');
-gameBoard.setGame(playerX);
-console.log('Hey..',gameBoard.getCurrentPlayer().getPlayerName());
+//Module displayController
+const displayController = ( () => {
+  const renderStartGame = () => {
+    console.log('Hey',this);
+    const playerXInput = document.querySelector('#name-player-x');
+    const playerOInput = document.querySelector('#name-player-o');
+    const alert = document.querySelector('#names-players');
+    alert.classList.remove('d-none');
+    if (playerXInput.value !== '' && playerOInput.value !== '') {
+      alert.classList.add('d-none');
+      renderBoard(playerXInput.value, playerOInput.value)
+    }
+
+  }
+
+  const renderBoard = (nameX, nameO) => {
+    const form = document.querySelector('.form');
+    const boardGame = document.querySelector('#board-game');
+    boardGame.classList.remove('board-hidden');
+    boardGame.classList.add('board-active');
+    form.classList.toggle('form-hidden');
+    gameBoard.setGame();
+    gameBoard.players(nameX, nameO);
+
+  }
+
+  return {
+    renderStartGame
+  }
+
+}
+
+)();
+
+const buttonStartGame = document.querySelector('#start-game');
+buttonStartGame.addEventListener('click',displayController.renderStartGame);
