@@ -191,6 +191,7 @@ const displayController = ( () => {
 
 const buttonStartGame = document.querySelector('#start-game');
 const buttonsMove = document.querySelectorAll('.btn-move');
+const restartButton = document.getElementById('button-reset')
 buttonStartGame.addEventListener('click',displayController.renderStartGame);
 buttonsMove.forEach((button) => button.addEventListener('click', displayController.renderMoves));
-const restartButton = document.getElementById('button-reset').addEventListener('click', displayController.restart);
+restartButton.addEventListener('click', displayController.restart);
