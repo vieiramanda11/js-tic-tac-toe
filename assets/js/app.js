@@ -75,6 +75,29 @@ const gameBoard = (() => {
     endRound = false;
   }
 
+  const draw = () => {
+    let filter = board.filter((position) => {
+      Number.isInteger(position);
+    });
+
+    if (filter.length === 0) {
+      return true;
+    } else {
+      return false;
+    }
+  }
+
+  const win = () => {
+    if(board.winDiagonalCondition() || board.winHorizontalCondition() || board.winVerticalCondition()) {
+      return true;
+    } else {
+      return false;
+    }
+  };
+
+  const winner = () => {
+    currentPlayer === firstPlayer ? secondPlayer.getPlayerName() : firstPlayer.getPlayerName();
+  };
 
   return {
     setGame, getCurrentPlayer
