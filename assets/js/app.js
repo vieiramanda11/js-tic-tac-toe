@@ -55,6 +55,27 @@ const gameBoard = (() => {
     secondPlayer = Player(second, turnO);
   }
 
+  const changePlayer = () => {
+    currentPlayer = currentPlayer === firstPlayer ? secondPlayer : firstPlayer;
+    return currentPlayer;
+  }
+
+  const playerMove = (position) => {
+    if(endRound ===false){
+      if (currentPlayer === firstPlayer) {
+        board[position] = firstPlayer.getPlayerToken();
+        endRound = true;
+
+      }else{
+        board[position] = secondPlayer.getPlayerToken();
+        endRound = true;
+      }
+    }
+    changePlayer();
+    endRound = false;
+  }
+
+
   return {
     setGame, getCurrentPlayer
   }
