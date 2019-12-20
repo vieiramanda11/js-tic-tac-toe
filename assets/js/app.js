@@ -101,11 +101,10 @@ const gameBoard = (() => {
   };
 
   const winner = () => {
-    if (currentPlayer === firstPlayer){
+    if (currentPlayer === firstPlayer) {
       return secondPlayer.getPlayerName();
-    } else {
-      return firstPlayer.getPlayerName();
     }
+    return firstPlayer.getPlayerName();
   };
 
   const boardEmpty = () => {
@@ -185,7 +184,10 @@ const displayController = (() => {
     gameBoard.setGame();
     gameBoard.players(nameX, nameO);
     const buttons = document.querySelectorAll('.btn-move');
-    buttons.forEach(button => {button.innerHTML = ''});
+    buttons.forEach(button => {
+      const auxButton = button;
+      auxButton.innerHTML = ''
+    });
     renderMessages("Let's Begin. First Turn X");
   };
 
