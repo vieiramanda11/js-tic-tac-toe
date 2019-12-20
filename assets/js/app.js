@@ -16,42 +16,46 @@ const gameBoard = (() => {
   let secondPlayer;
 
   const setGame = () => {
-    turnX = "X";
-    turnO = "O";
+    turnX = 'X';
+    turnO = 'O';
     endRound = false;
     board = [1, 2, 3, 4, 5, 6, 7, 8, 9];
   };
 
-  const getCurrentPlayer = () => {
-    return currentPlayer;
-  };
+  const getCurrentPlayer = () => currentPlayer;
 
   const winHorizontalCondition = () => {
     if (
-      (board[0] === board[1] && board[0] === board[2]) ||
-      (board[3] === board[4] && board[3] === board[5]) ||
-      (board[6] === board[7] && board[6] === board[8])
+      (board[0] === board[1] && board[0] === board[2])
+      || (board[3] === board[4] && board[3] === board[5])
+      || (board[6] === board[7] && board[6] === board[8])
     ) {
       return true;
+    } else {
+      return false;
     }
   };
 
   const winVerticalCondition = () => {
     if (
-      (board[0] == board[3] && board[0] == board[6]) ||
-      (board[1] == board[4] && board[1] == board[7]) ||
-      (board[2] == board[5] && board[2] == board[8])
+      (board[0] === board[3] && board[0] === board[6])
+      || (board[1] === board[4] && board[1] === board[7])
+      || (board[2] === board[5] && board[2] === board[8])
     ) {
       return true;
+    } else {
+      return false;
     }
   };
 
   const winDiagonalCondition = () => {
     if (
-      (board[0] == board[4] && board[0] == board[8]) ||
-      (board[2] == board[4] && board[2] == board[6])
+      (board[0] === board[4] && board[0] === board[8])
+      || (board[2] === board[4] && board[2] === board[6])
     ) {
       return true;
+    } else {
+      return false;
     }
   };
 
@@ -66,17 +70,10 @@ const gameBoard = (() => {
     return currentPlayer;
   };
 
-  const playerMove = position => {
-    console.log(
-      "before",
-      currentPlayer.getPlayerName(),
-      firstPlayer.getPlayerName(),
-      secondPlayer.getPlayerName()
-    );
+  const playerMove = (position) => {
     if (endRound === false) {
       if (currentPlayer === firstPlayer) {
         board[position] = firstPlayer.getPlayerToken();
-        console.log("after", board);
         endRound = true;
       } else {
         board[position] = secondPlayer.getPlayerToken();
@@ -88,24 +85,20 @@ const gameBoard = (() => {
   };
 
   const draw = () => {
-    let filter = board.filter(position => !Number.isInteger(position));
+    const filter = board.filter(position => !Number.isInteger(position));
 
     if (filter.length === 9) {
       return true;
-    } else {
-      return false;
     }
   };
 
   const win = () => {
     if (
-      winDiagonalCondition() ||
-      winHorizontalCondition() ||
-      winVerticalCondition()
+      winDiagonalCondition()
+      || winHorizontalCondition()
+      || winVerticalCondition()
     ) {
       return true;
-    } else {
-      return false;
     }
   };
 
@@ -116,7 +109,7 @@ const gameBoard = (() => {
   };
 
   const boardEmpty = () => {
-    let filter = board.filter(position => Number.isInteger(position));
+    const filter = board.filter((position) => Number.isInteger(position));
     if (filter.length === board.length) {
       return true;
     } else {
@@ -141,12 +134,12 @@ const displayController = (() => {
   let nameX;
   let nameO;
   const renderStartGame = () => {
-    const playerXInput = document.querySelector("#name-player-x");
-    const playerOInput = document.querySelector("#name-player-o");
-    const alert = document.querySelector("#names-players");
-    alert.classList.remove("d-none");
-    if (playerXInput.value !== "" && playerOInput.value !== "") {
-      alert.classList.add("d-none");
+    const playerXInput = document.querySelector('#name-player-x');
+    const playerOInput = document.querySelector('#name-player-o');
+    const alert = document.querySelector('#names-players');
+    alert.classList.remove('d-none');
+    if (playerXInput.value !== '' && playerOInput.value !== '') {
+      alert.classList.add('d-none');
       nameX = playerXInput.value;
       nameO = playerOInput.value;
       renderBoard();
@@ -154,23 +147,22 @@ const displayController = (() => {
   };
 
   const renderBoard = () => {
-    const form = document.querySelector(".form");
-    const boardGame = document.querySelector("#board-game");
-    boardGame.classList.remove("board-hidden");
-    boardGame.classList.add("board-active");
-    form.classList.toggle("form-hidden");
+    const form = document.querySelector('.form');
+    const boardGame = document.querySelector('#board-game');
+    boardGame.classList.remove('board-hidden');
+    boardGame.classList.add('board-active');
+    form.classList.toggle('form-hidden');
     gameBoard.setGame();
     gameBoard.players(nameX, nameO);
   };
 
   const renderMoves = e => {
-    console.log(gameBoard.getCurrentPlayer().getPlayerToken());
     if (gameBoard.boardEmpty()) {
       e.target.innerHTML = gameBoard.getCurrentPlayer().getPlayerToken();
       gameBoard.playerMove(e.target.dataset.position - 1);
     }
 
-    if (!gameBoard.win() && !gameBoard.draw() && e.target.innerHTML === "") {
+    if (!gameBoard.win() && !gameBoard.draw() && e.target.innerHTML === '') {
       e.target.innerHTML = gameBoard.getCurrentPlayer().getPlayerToken();
       gameBoard.playerMove(e.target.dataset.position - 1);
     }
@@ -183,21 +175,21 @@ const displayController = (() => {
       renderMessages("Too bad. It's a draw.");
     } else {
       renderMessages(
-        "Next Turn " + gameBoard.getCurrentPlayer().getPlayerToken()
+        'Next Turn ' + gameBoard.getCurrentPlayer().getPlayerToken()
       );
     }
   };
 
   const renderMessages = messageString => {
-    const spanMessage = document.querySelector(".span-message");
+    const spanMessage = document.querySelector('.span-message');
     spanMessage.innerHTML = messageString;
   };
 
   const restart = () => {
     gameBoard.setGame();
     gameBoard.players(nameX, nameO);
-    const buttons = document.querySelectorAll(".btn-move");
-    buttons.forEach(button => (button.innerHTML = ""));
+    const buttons = document.querySelectorAll('.btn-move');
+    buttons.forEach(button => (button.innerHTML = ''));
     renderMessages("Let's Begin. First Turn X");
   };
 
@@ -208,11 +200,11 @@ const displayController = (() => {
   };
 })();
 
-const buttonStartGame = document.querySelector("#start-game");
-const buttonsMove = document.querySelectorAll(".btn-move");
-const restartButton = document.getElementById("button-reset");
-buttonStartGame.addEventListener("click", displayController.renderStartGame);
+const buttonStartGame = document.querySelector('#start-game');
+const buttonsMove = document.querySelectorAll('.btn-move');
+const restartButton = document.getElementById('button-reset');
+buttonStartGame.addEventListener('click', displayController.renderStartGame);
 buttonsMove.forEach(button =>
-  button.addEventListener("click", displayController.renderMoves)
+  button.addEventListener('click', displayController.renderMoves)
 );
-restartButton.addEventListener("click", displayController.restart);
+restartButton.addEventListener('click', displayController.restart);
