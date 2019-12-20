@@ -82,7 +82,7 @@ const gameBoard = (() => {
   };
 
   const draw = () => {
-    const filter = board.filter((position) => !Number.isInteger(position));
+    const filter = board.filter(position => !Number.isInteger(position));
     if (filter.length === 9) {
       return true;
     }
@@ -96,14 +96,13 @@ const gameBoard = (() => {
       || winVerticalCondition()
     ) {
       return true;
-    } 
+    }
     return false;
   };
 
   const winner = () => {
-    return currentPlayer === firstPlayer
-      ? secondPlayer.getPlayerName()
-      : firstPlayer.getPlayerName();
+    currentPlayer === firstPlayer ? secondPlayer.getPlayerName() : firstPlayer.getPlayerName();
+    return currentPlayer;
   };
 
   const boardEmpty = () => {
@@ -122,7 +121,7 @@ const gameBoard = (() => {
     draw,
     playerMove,
     winner,
-    boardEmpty
+    boardEmpty,
   };
 })();
 
@@ -154,12 +153,12 @@ const displayController = (() => {
     }
   };
 
-  const renderMessages = messageString => {
+  const renderMessages = (messageString) => {
     const spanMessage = document.querySelector('.span-message');
     spanMessage.innerHTML = messageString;
   };
 
-  const renderMoves = e => {
+  const renderMoves = (e) => {
     if (gameBoard.boardEmpty()) {
       e.target.innerHTML = gameBoard.getCurrentPlayer().getPlayerToken();
       gameBoard.playerMove(e.target.dataset.position - 1);
@@ -171,15 +170,11 @@ const displayController = (() => {
     }
 
     if (gameBoard.win()) {
-      renderMessages(
-        `${gameBoard.winner()} congratulations, you won the game!`
-      );
+      renderMessages(`${gameBoard.winner()} congratulations, you won the game!`);
     } else if (gameBoard.draw()) {
       renderMessages("Too bad. It's a draw.");
     } else {
-      renderMessages(
-        'Next Turn ' + gameBoard.getCurrentPlayer().getPlayerToken()
-      );
+      renderMessages(`Next Turn ${gameBoard.getCurrentPlayer().getPlayerToken()}`);
     }
   };
 
@@ -194,7 +189,7 @@ const displayController = (() => {
   return {
     renderStartGame,
     renderMoves,
-    restart
+    restart,
   };
 })();
 
