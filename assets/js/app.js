@@ -59,8 +59,8 @@ const gameBoard = (() => {
 
   const win = () => {
     const lastToken = currentPlayer.getPlayerToken() === 'X' ? 'O' : 'X';
-    const winnerCases = [[0, 1, 2], [3, 4, 5], [6, 7, 8], 
-                        [0, 3, 6], [1, 4, 7], [2, 5, 8], [0, 4, 8], [2, 4, 6]];
+    const winnerCases = [[0, 1, 2], [3, 4, 5], [6, 7, 8],
+      [0, 3, 6], [1, 4, 7], [2, 5, 8], [0, 4, 8], [2, 4, 6]];
     for (let i = 0; i < winnerCases.length; i += 1) {
       if (board[winnerCases[i][0]] === lastToken
         && board[winnerCases[i][1]] === lastToken
@@ -72,8 +72,8 @@ const gameBoard = (() => {
   };
 
   const winner = () => {
-    const lastPlayerName = currentPlayer === firstPlayer 
-                            ? secondPlayer.getPlayerName() : firstPlayer.getPlayerName();
+    const lastPlayerName = currentPlayer === firstPlayer
+      ? secondPlayer.getPlayerName() : firstPlayer.getPlayerName();
 
     return lastPlayerName;
   };
